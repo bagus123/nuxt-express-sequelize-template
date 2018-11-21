@@ -1,4 +1,4 @@
-# nuxt-express-template with sequlize + postgre
+# nuxt-express-template with sequelize + postgre
 
 > This Template Nuxt + Express with Sequelize+Postgre
 
