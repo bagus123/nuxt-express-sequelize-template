@@ -30,12 +30,13 @@ async function start() {
   app.use(nuxt.render);
 
   // Listen the server
-
+  const host = config.host || '127.0.0.1'
+  const port = config.port || 3000
   db.sequelize
     .sync()
     .then(() => {
-      app.listen(config.port, () => {
-        require("./feeds/user_role").run();
+      app.listen(port, host, () => {
+        require("./seeds/user_role").run();
         consola.ready({
           message: `Server listening on port : ${config_.port}`,
           badge: true

@@ -2,6 +2,11 @@
 
 > This Template Nuxt + Express with Sequelize+Postgre
 
+Requirement
+
+- Node v9.11.2
+- PostgreSQL
+
 ## Build Setup
 
 ```bash
