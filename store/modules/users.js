@@ -14,11 +14,6 @@ const store = () => {
                 return state.users;
             }
         },
-        setters: {
-            users: (state, payload) => {
-                state.users = payload
-            }
-        },
         mutations: {
             SET_USERS: (state, payload) => {
                 state.users = payload
