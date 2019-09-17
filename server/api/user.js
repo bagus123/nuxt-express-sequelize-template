@@ -1,9 +1,13 @@
 const express = require("express");
 const router = express.Router();
-//const db = require("../models");
 
-router.get("/", (req, res, next) => {
-  res.send({ id: 1, name: "tubagus" });
+router.get("/", async (req, res) => {
+  try {
+    let users = await MODELS.User.findAll()
+    res.send(users);
+  } catch (err) {
+    res.status(400).send({ message: err.message })
+  }
 });
 
 module.exports = router;

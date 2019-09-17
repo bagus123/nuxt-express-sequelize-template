@@ -5,7 +5,9 @@ const app = express();
 const config_ = require("../config/config");
 const bodyParser = require("body-parser");
 const api = require("./api");
-const db = require("./models");
+const models = require('./models')
+
+global.MODELS = models
 
 app.set("port", config_.port);
 app.use(bodyParser.json());
@@ -32,11 +34,15 @@ async function start() {
   // Listen the server
   const host = config.host || '127.0.0.1'
   const port = config.port || 3000
-  db.sequelize
+
+  // Sync all models that aren't already in the database
+  SEQUELIZECONNECTION
     .sync()
     .then(() => {
       app.listen(port, host, () => {
-        require("./seeds/user_role").run();
+
+        // running seed (init data)
+        require("./seeds/userSeed").run();
         consola.ready({
           message: `Server listening on port : ${config_.port}`,
           badge: true

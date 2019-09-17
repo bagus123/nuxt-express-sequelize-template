@@ -2,6 +2,13 @@
 
 > This Template Nuxt + Express with Sequelize+Postgre
 
+What You will Learn in this template
+
+- Nuxt
+- Vuex
+- Express
+- Sequelize
+
 Requirement
 
 - Node v9.11.2
@@ -25,3 +32,12 @@ $ yarn run generate
 ```
 
 For detailed explanation on how things work, checkout [Nuxt.js docs](https://nuxtjs.org).
+
+### Vuex
+
+![](https://github.com/bagus123/nuxt-express-sequelize-template/blob/master/vuex.png)
+
+Reading
+
+- https://vuex.vuejs.org/guide/state.html
+- https://nuxtjs.org/guide/vuex-store

@@ -1,7 +1,6 @@
 var Bcrypt = require("bcrypt");
 module.exports = (sequelize, DataTypes) => {
-  const User = sequelize.define(
-    "User",
+  let User = sequelize.define("user",
     {
       id: {
         type: DataTypes.INTEGER,
@@ -9,44 +8,50 @@ module.exports = (sequelize, DataTypes) => {
         primaryKey: true,
         autoIncrement: true
       },
-      email: DataTypes.STRING,
-      password: DataTypes.STRING
-    },
-    {
-      classMethods: {
-        associate: models => {
-          models.User.belongsToMany(models.Role, {
-            through: models.UserRole,
-            foreignKey: "user_id",
-            targetKey: "role_id",
-            as: "roles"
-          });
+      email: {
+        type: DataTypes.STRING,
+        // validate email https://sequelize.org/master/manual/models-definition.html#validations
+        validate: {
+          isEmail: true
         }
       },
-      getterMethods: {},
-      setterMethods: {
-        password: function(value) {
-          var hashedPassword = Bcrypt.hashSync(value, 10);
+      role: {
+        type: DataTypes.ENUM('ADMIN', 'USER'),
+        defaultValue: 'USER'
+      },
+      password: {
+        type: DataTypes.STRING,
+        // setter https://sequelize.org/master/manual/models-definition.html#getters--amp--setters
+        set(val) {
+          let hashedPassword = Bcrypt.hashSync(val, 10);
           return this.setDataValue("password", hashedPassword);
         }
-      },
-      instanceMethods: {
-        isValidPassword: function(password, callback) {
-          Bcrypt.compare(password, this.password, function(error, isMatch) {
-            console.log(error);
+      }
+    });
 
-            if (error) {
-              throw error;
-            }
-            callback(null, isMatch);
-          });
+
+  // Adding a class level method
+  User.classLevelMethod = () => {
+    return 'foo';
+  };
+
+  // Adding an instance level method
+  User.prototype.instanceLevelMethod = () => {
+    return 'bar';
+  };
+
+  // Adding an instance level method
+  User.prototype.isValidPassword = async (password) => {
+    return await Promise((resolve, reject) => {
+      Bcrypt.compare(password, this.password, function (error, isMatch) {
+        if (error) {
+          reject(error)
         }
-      },
-      underscored: true,
-      freezeTableName: true,
-      tableName: "users"
-    }
-  );
+        resolve(isMatch)
+      });
+    })
+  }
 
-  return User;
+
+  return { name: 'User', schema: User };
 };
